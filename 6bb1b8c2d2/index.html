@@ -1,338 +1,105 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Farcaster ASCII Banner</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CANVAS</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
-  :root {
-    --bg: #0a0a0f;
-    --fg: #c084fc;
-    --glow: #a855f7;
-    --accent: #7c3aed;
-    --dim: #3b0764;
-    --btn-bg: #1a1a2e;
-    --btn-border: #4c1d95;
-    --btn-hover: #2d1b69;
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    height: 100%;
+    background-color: #000000;
+    color: #00ff41;
+    font-family: "Courier New", Courier, "Lucida Console", monospace;
+  }
 
   body {
-    background: var(--bg);
-    color: var(--fg);
-    font-family: 'Share Tech Mono', 'Courier New', monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+    padding: 2rem;
+  }
+
+  .terminal-frame {
+    border: 1px solid #00ff41;
+    padding: 3rem 4rem;
     position: relative;
+    box-shadow:
+      0 0 8px #00ff41,
+      0 0 24px rgba(0, 255, 65, 0.3),
+      inset 0 0 40px rgba(0, 255, 65, 0.04);
   }
 
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 80% 50% at 50% 0%, rgba(124,58,237,0.18) 0%, transparent 70%),
-      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(192,132,252,0.1) 0%, transparent 60%);
-    pointer-events: none;
-  }
-
-  /* Scanlines overlay */
-  body.scanlines::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.25) 2px,
-      rgba(0,0,0,0.25) 4px
-    );
-    pointer-events: none;
-    z-index: 10;
-  }
-
-  .wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 36px;
-    width: 100%;
-    padding: 40px 20px;
-    z-index: 1;
-  }
-
-  /* ── Banner ── */
-  .banner-wrap {
-    position: relative;
-    padding: 32px 40px;
-    border: 1px solid var(--btn-border);
-    border-radius: 6px;
-    background: rgba(10,10,20,0.7);
-    backdrop-filter: blur(4px);
-    overflow: hidden;
-  }
-
-  .banner-wrap::before {
-    content: '';
+  .terminal-frame::before {
+    content: "CANVAS // RED DESIGN ENGINE";
     position: absolute;
-    inset: 0;
-    border-radius: 6px;
-    background: linear-gradient(135deg, rgba(124,58,237,0.12) 0%, transparent 60%);
-    pointer-events: none;
-  }
-
-  pre.ascii {
-    font-size: clamp(5px, 1.1vw, 13px);
-    line-height: 1.22;
-    letter-spacing: 0.04em;
-    color: var(--fg);
-    text-shadow:
-      0 0 8px var(--glow),
-      0 0 20px var(--glow),
-      0 0 40px var(--accent);
-    transition: color 0.4s, text-shadow 0.4s, filter 0.4s;
-    white-space: pre;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Style variants */
-  body.green pre.ascii {
-    color: #4ade80;
-    text-shadow: 0 0 8px #22c55e, 0 0 20px #16a34a, 0 0 40px #15803d;
-    --glow: #22c55e;
-  }
-  body.green { --fg: #4ade80; --glow: #22c55e; --accent: #16a34a; --btn-border: #166534; --btn-bg: #052e16; --btn-hover: #14532d; --dim: #052e16; }
-
-  body.amber pre.ascii {
-    color: #fbbf24;
-    text-shadow: 0 0 8px #f59e0b, 0 0 20px #d97706, 0 0 40px #b45309;
-  }
-  body.amber { --fg: #fbbf24; --glow: #f59e0b; --accent: #d97706; --btn-border: #92400e; --btn-bg: #1c1108; --btn-hover: #451a03; --dim: #1c0a00; }
-
-  body.cyan pre.ascii {
-    color: #67e8f9;
-    text-shadow: 0 0 8px #22d3ee, 0 0 20px #0891b2, 0 0 40px #0e7490;
-  }
-  body.cyan { --fg: #67e8f9; --glow: #22d3ee; --accent: #0891b2; --btn-border: #164e63; --btn-bg: #061018; --btn-hover: #0c2233; --dim: #061018; }
-
-  body.red pre.ascii {
-    color: #f87171;
-    text-shadow: 0 0 8px #ef4444, 0 0 20px #dc2626, 0 0 40px #b91c1c;
-  }
-  body.red { --fg: #f87171; --glow: #ef4444; --accent: #dc2626; --btn-border: #7f1d1d; --btn-bg: #180808; --btn-hover: #3b0e0e; --dim: #180808; }
-
-  body.white pre.ascii {
-    color: #e2e8f0;
-    text-shadow: 0 0 8px #cbd5e1, 0 0 20px #94a3b8, 0 0 40px #64748b;
-  }
-  body.white { --fg: #e2e8f0; --glow: #cbd5e1; --accent: #94a3b8; --btn-border: #334155; --btn-bg: #0f1117; --btn-hover: #1e293b; --dim: #0f172a; }
-
-  /* Neon flicker */
-  body.flicker pre.ascii {
-    animation: flicker 3s infinite;
-  }
-
-  @keyframes flicker {
-    0%,19%,21%,23%,25%,54%,56%,100% { opacity: 1; }
-    20%,22%,24%,55% { opacity: 0.4; }
-  }
-
-  /* No glow */
-  body.noglow pre.ascii {
-    text-shadow: none;
-    filter: none;
-  }
-
-  /* Outline / hollow effect */
-  body.outline pre.ascii {
-    -webkit-text-stroke: 0.5px var(--fg);
-    color: transparent;
-    text-shadow: none;
-    filter: none;
-  }
-
-  /* ── Controls ── */
-  .controls {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 18px;
-    width: 100%;
-    max-width: 760px;
-  }
-
-  .control-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    width: 100%;
-  }
-
-  .group-label {
-    width: 100%;
-    text-align: center;
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--glow);
-    opacity: 0.5;
-    margin-bottom: 2px;
-  }
-
-  /* Toggle buttons (pure CSS via checkbox hack) */
-  .toggle input[type="checkbox"] { display: none; }
-
-  .toggle label {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    cursor: pointer;
-    padding: 8px 18px;
-    border: 1px solid var(--btn-border);
-    border-radius: 4px;
-    background: var(--btn-bg);
-    color: var(--fg);
-    font-family: inherit;
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, color 0.2s;
-    user-select: none;
-  }
-
-  .toggle label::before {
-    content: '○';
-    font-size: 10px;
-    opacity: 0.6;
-    transition: all 0.2s;
-  }
-
-  .toggle input:checked + label {
-    background: var(--btn-hover);
-    border-color: var(--glow);
-    box-shadow: 0 0 10px rgba(168,85,247,0.3), inset 0 0 8px rgba(168,85,247,0.1);
-    color: var(--fg);
-  }
-
-  .toggle input:checked + label::before {
-    content: '●';
-    opacity: 1;
-    color: var(--glow);
-    text-shadow: 0 0 6px var(--glow);
-  }
-
-  .toggle label:hover {
-    background: var(--btn-hover);
-    border-color: var(--glow);
-  }
-
-  /* Radio-style color pickers */
-  .color-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-  }
-
-  .color-toggle input[type="radio"] { display: none; }
-
-  .color-toggle label {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    cursor: pointer;
-    padding: 8px 18px;
-    border: 1px solid var(--btn-border);
-    border-radius: 4px;
-    background: var(--btn-bg);
-    color: var(--fg);
-    font-family: inherit;
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
-    user-select: none;
-  }
-
-  .color-toggle label:hover {
-    background: var(--btn-hover);
-    border-color: var(--glow);
-  }
-
-  .color-toggle input:checked + label {
-    background: var(--btn-hover);
-    border-color: var(--glow);
-    box-shadow: 0 0 10px rgba(168,85,247,0.3), inset 0 0 8px rgba(168,85,247,0.1);
-  }
-
-  .swatch {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  /* ── Footer ── */
-  .footer {
-    font-size: 11px;
+    top: -0.65em;
+    left: 2rem;
+    background: #000000;
+    padding: 0 0.75rem;
+    font-size: 0.7rem;
     letter-spacing: 0.15em;
-    opacity: 0.25;
-    text-transform: uppercase;
+    color: #00ff41;
+    opacity: 0.75;
   }
 
-  /* ── CSS-only toggle mechanics ── */
-  /* We drive body classes purely through sibling combinators + :has() */
+  .terminal-frame::after {
+    content: "v1.0.0";
+    position: absolute;
+    bottom: -0.65em;
+    right: 2rem;
+    background: #000000;
+    padding: 0 0.75rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: #00ff41;
+    opacity: 0.5;
+  }
 
-  /* Color scheme */
-  #c-purple:checked ~ .wrapper { --active: purple; }
+  .banner {
+    display: block;
+    font-size: clamp(0.55rem, 1.4vw, 1rem);
+    line-height: 1.2;
+    letter-spacing: 0;
+    white-space: pre;
+    color: #00ff41;
+    text-shadow:
+      0 0 6px #00ff41,
+      0 0 16px rgba(0, 255, 65, 0.6);
+  }
 
-  /* The trick: target body via :has on hidden inputs that live as children of body */
-  body:has(#c-green:checked) { --fg: #4ade80; --glow: #22c55e; --accent: #16a34a; --btn-border: #166534; --btn-bg: #052e16; --btn-hover: #14532d; }
-  body:has(#c-green:checked) pre.ascii { color: #4ade80 !important; text-shadow: 0 0 8px #22c55e, 0 0 20px #16a34a, 0 0 40px #15803d !important; }
-
-  body:has(#c-amber:checked) { --fg: #fbbf24; --glow: #f59e0b; --accent: #d97706; --btn-border: #92400e; --btn-bg: #1c1108; --btn-hover: #451a03; }
-  body:has(#c-amber:checked) pre.ascii { color: #fbbf24 !important; text-shadow: 0 0 8px #f59e0b, 0 0 20px #d97706, 0 0 40px #b45309 !important; }
-
-  body:has(#c-cyan:checked) { --fg: #67e8f9; --glow: #22d3ee; --accent: #0891b2; --btn-border: #164e63; --btn-bg: #061018; --btn-hover: #0c2233; }
-  body:has(#c-cyan:checked) pre.ascii { color: #67e8f9 !important; text-shadow: 0 0 8px #22d3ee, 0 0 20px #0891b2, 0 0 40px #0e7490 !important; }
-
-  body:has(#c-red:checked) { --fg: #f87171; --glow: #ef4444; --accent: #dc2626; --btn-border: #7f1d1d; --btn-bg: #180808; --btn-hover: #3b0e0e; }
-  body:has(#c-red:checked) pre.ascii { color: #f87171 !important; text-shadow: 0 0 8px #ef4444, 0 0 20px #dc2626, 0 0 40px #b91c1c !important; }
-
-  body:has(#c-white:checked) { --fg: #e2e8f0; --glow: #cbd5e1; --accent: #94a3b8; --btn-border: #334155; --btn-bg: #0f1117; --btn-hover: #1e293b; }
-  body:has(#c-white:checked) pre.ascii { color: #e2e8f0 !important; text-shadow: 0 0 8px #cbd5e1, 0 0 20px #94a3b8, 0 0 40px #64748b !important; }
-
-  /* Scanlines */
-  body:has(#t-scanlines:checked)::after {
-    content: '';
+  .scanline-overlay {
     position: fixed;
     inset: 0;
+    pointer-events: none;
     background: repeating-linear-gradient(
-      0deg,
+      to bottom,
       transparent,
       transparent 2px,
-      rgba(0,0,0,0.28) 2px,
-      rgba(0,0,0,0.28) 4px
+      rgba(0, 0, 0, 0.08) 2px,
+      rgba(0, 0, 0, 0.08) 4px
     );
-    pointer-events: none;
     z-index: 10;
   }
-
-  /* Flicker */
-  body:has(#t-flicker:checked) pre.ascii {
-    animation: flicker 3s infinite !important;
-  }
-
-  /* No glow */
-  body:has(#t-noglow:checked) pre.ascii
+</style>
+</head>
+<body>
+<div class="scanline-overlay"></div>
+<div class="terminal-frame">
+<pre class="banner">
+ ____    _    _   ___     ___    ____  
+/ ___|  / \  | \ | \ \   / / \  / ___| 
+| |     / _ \ |  \| |\ \ / / _ \ \___ \ 
+| |___ / ___ \| |\  | \ V / ___ \ ___) |
+ \____/_/   \_\_| \_|  \_/_/   \_\____/ 
+                                        
+</pre>
+</div>
+</body>
+</html>
