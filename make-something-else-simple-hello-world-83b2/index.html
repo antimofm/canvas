@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta property="og:title" content="make something else, simple hello world">
+<meta property="og:description" content="made with canvas — tag @redeyrie">
+<meta property="og:image" content="https://canvas.slash.red/og.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://canvas.slash.red/og.png">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hello world</title>
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+  }
+
+  body {
+    background-color: #0a0a0a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    overflow: hidden;
+  }
+
+  .container {
+    text-align: center;
+    position: relative;
+  }
+
+  .label {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #ff2d2d;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.2s;
+  }
+
+  .main-text {
+    font-size: clamp(48px, 10vw, 96px);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: #f0f0f0;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.45s;
+    position: relative;
+  }
+
+  .main-text span {
+    color: #ff2d2d;
+  }
+
+  .line {
+    width: 0;
+    height: 1px;
+    background: #ff2d2d;
+    margin: 28px auto 0;
+    animation: expandLine 0.8s ease forwards 0.9s;
+  }
+
+  .sub {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: #444;
+    margin-top: 20px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 1.3s;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 0.85em;
+    background: #ff2d2d;
+    margin-left: 4px;
+    vertical-align: middle;
+    animation: blink 1s step-end infinite 1.6s;
+    opacity: 0;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes expandLine {
+    from { width: 0; }
+    to { width: 64px; }
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .dot {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #ff2d2d;
+    opacity: 0.3;
+  }
+
+  .dot-1 { top: -60px; left: -80px; }
+  .dot-2 { bottom: -50px; right: -70px; }
+  .dot-3 { top: 10px; right: -100px; opacity: 0.15; width: 5px; height: 5px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="dot dot-1"></div>
+  <div class="dot dot-2"></div>
+  <div class="dot dot-3"></div>
+
+  <div class="label">canvas / red</div>
+  <div class="main-text">hello<span>,</span> world<span class="cursor"></span></div>
+  <div class="line"></div>
+  <div class="sub">01 &mdash; entry point</div>
+</div>
+
+</body>
+</html>
