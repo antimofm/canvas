@@ -1,9 +1,14 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta property="og:title" content="I'm working towards making /red entirely autonomous
+<meta property="og:title" content="me a landing page for 'Farcon 2027', a conference in Buenos Aires, South American graphic ">
+<meta property="og:description" content="made with canvas — tag @redmake">
+<meta property="og:image" content="https://canvas.slash.red/og.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://canvas.slash.red/og.png">
 
-The first prototype is Canvas, here's">
+<meta property="og:title" content="Farcon 2027 — Buenos Aires">
 <meta property="og:description" content="made with canvas — tag @redmake">
 <meta property="og:image" content="https://canvas.slash.red/og.png">
 <meta property="og:type" content="website">
@@ -28,6 +33,8 @@ The first prototype is Canvas, here's">
     --gold: #e8b84b;
     --ink: #1a1410;
     --mid: #6b5e4e;
+    --teal: #2a7a6a;
+    --sky: #4a8fa8;
   }
 
   html {
@@ -65,7 +72,7 @@ The first prototype is Canvas, here's">
     border-bottom: 1px solid rgba(245,240,232,0.12);
   }
 
-  /* Diagonal stripe background */
+  /* Argentine diagonal stripe background */
   .hero::after {
     content: '';
     position: absolute;
@@ -77,10 +84,23 @@ The first prototype is Canvas, here's">
       -45deg,
       transparent,
       transparent 40px,
-      rgba(212,43,43,0.04) 40px,
-      rgba(212,43,43,0.04) 41px
+      rgba(212,43,43,0.035) 40px,
+      rgba(212,43,43,0.035) 41px
     );
     pointer-events: none;
+  }
+
+  /* Background grid lines */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(245,240,232,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,240,232,0.025) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+    z-index: 1;
   }
 
   .nav {
@@ -199,6 +219,7 @@ The first prototype is Canvas, here's">
     align-items: center;
     justify-content: center;
     pointer-events: none;
+    z-index: 1;
   }
 
   .hero-circle::before {
@@ -225,6 +246,7 @@ The first prototype is Canvas, here's">
     color: rgba(245,240,232,0.15);
     text-align: center;
     line-height: 2;
+    z-index: 2;
   }
 
   /* Rotating ring text */
@@ -237,6 +259,24 @@ The first prototype is Canvas, here's">
 
   @keyframes spin {
     to { transform: rotate(360deg); }
+  }
+
+  /* Argentine sun motif */
+  .hero-sun {
+    position: absolute;
+    right: 8%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: clamp(180px, 25vw, 320px);
+    height: clamp(180px, 25vw, 320px);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .hero-sun svg {
+    width: 100%;
+    height: 100%;
+    opacity: 0.12;
   }
 
   .hero-meta {
@@ -384,101 +424,72 @@ The first prototype is Canvas, here's">
     line-height: 1.8;
   }
 
-  /* ─── SPEAKERS ─── */
-  .speakers-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-    margin-top: 1rem;
-  }
-
-  .speaker-card {
-    border: 1px solid rgba(245,240,232,0.08);
-    padding: 2rem 1.5rem;
-    position: relative;
-    transition: border-color 0.3s, background 0.3s;
-    cursor: default;
-  }
-
-  .speaker-card:hover {
-    border-color: var(--red);
-    background: rgba(212,43,43,0.04);
-  }
-
-  .speaker-card::before {
-    content: attr(data-num);
-    position: absolute;
-    top: 1rem;
-    right: 1.5rem;
-    font-size: 0.5rem;
-    letter-spacing: 0.3em;
-    color: rgba(245,240,232,0.15);
-  }
-
-  .speaker-avatar {
-    width: 3.5rem;
-    height: 3.5rem;
-    background: rgba(245,240,232,0.05);
-    border: 1px solid rgba(245,240,232,0.1);
-    margin-bottom: 1.5rem;
+  /* ─── CITY FEATURE ─── */
+  .city-feature {
+    background: #0e0b09;
     position: relative;
     overflow: hidden;
-    display: flex;
+  }
+
+  .city-feature::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 59px,
+        rgba(245,240,232,0.03) 59px,
+        rgba(245,240,232,0.03) 60px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 59px,
+        rgba(245,240,232,0.03) 59px,
+        rgba(245,240,232,0.03) 60px
+      );
+    pointer-events: none;
+  }
+
+  .city-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
     align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .city-left {
+    position: relative;
+  }
+
+  .city-illustration {
+    width: 100%;
+    aspect-ratio: 4/3;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
     justify-content: center;
-    font-size: 1.2rem;
-    color: rgba(245,240,232,0.2);
+    overflow: hidden;
+    border: 1px solid rgba(245,240,232,0.06);
   }
 
-  /* Geometric avatars using CSS */
-  .speaker-card:nth-child(1) .speaker-avatar {
-    background: linear-gradient(135deg, #1a0a0a 0%, #4a1515 100%);
-  }
-  .speaker-card:nth-child(2) .speaker-avatar {
-    background: linear-gradient(135deg, #0a1a0a 0%, #1a3a2a 100%);
-  }
-  .speaker-card:nth-child(3) .speaker-avatar {
-    background: linear-gradient(135deg, #0a0a1a 0%, #1a1a4a 100%);
-  }
-  .speaker-card:nth-child(4) .speaker-avatar {
-    background: linear-gradient(135deg, #1a1205 0%, #3a2a0a 100%);
+  .city-illustration svg {
+    width: 100%;
+    height: 100%;
   }
 
-  .speaker-name {
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--white);
-    margin-bottom: 0.4rem;
-    line-height: 1.3;
-  }
-
-  .speaker-role {
-    font-size: 0.55rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--mid);
-    margin-bottom: 1rem;
-  }
-
-  .speaker-topic {
-    font-size: 0.62rem;
-    color: var(--gold);
-    line-height: 1.7;
-    letter-spacing: 0.05em;
-  }
-
-  /* ─── SCHEDULE ─── */
-  .schedule-list {
+  .city-right {
     display: flex;
     flex-direction: column;
-    gap: 0;
+    gap: 2.5rem;
   }
 
-  .schedule-item {
-    display: grid;
-    grid-template-columns: 6rem 3rem 1fr auto;
-    align-items: center;
-    gap: 2rem;
-    padding: 1.8rem 0;
+  .city-headline {
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0
