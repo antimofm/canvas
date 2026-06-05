@@ -1,6 +1,13 @@
 <!doctype html>
 <html lang="en">
 <head>
+<meta property="og:title" content="a page with solid FF0000 bg">
+<meta property="og:description" content="made with canvas — tag @redmake">
+<meta property="og:image" content="https://canvas.slash.red/og.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://canvas.slash.red/og.png">
+
 <meta property="og:title" content="make a wireframe of a pricing page">
 <meta property="og:description" content="made with canvas — tag @redeyrie">
 <meta property="og:image" content="https://canvas.slash.red/og.png">
@@ -15,7 +22,7 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --wire-bg: #f0efed;
+    --wire-bg: #ff0000;
     --wire-surface: #ffffff;
     --wire-border: #b8b5b0;
     --wire-border-strong: #7a7672;
@@ -33,7 +40,7 @@
 
   body {
     font-family: var(--font);
-    background: var(--wire-bg);
+    background: #ff0000;
     color: var(--wire-text);
     font-size: 12px;
     line-height: 1.5;
@@ -66,7 +73,7 @@
     position: absolute;
     top: -9px;
     left: 10px;
-    background: var(--wire-bg);
+    background: #ff0000;
     padding: 0 6px;
     font-size: 9px;
     color: var(--wire-text-muted);
@@ -446,26 +453,11 @@
   }
   .compare-row:last-child { border-bottom: none; }
   .compare-row.group-header {
-    background: var(--wire-bg);
+    background: var(--wire-tag-bg);
     padding: 10px 20px;
   }
   .compare-row-label {
     height: 9px;
     background: var(--wire-placeholder);
     border-radius: 2px;
-    width: 70%;
-  }
-  .compare-row.group-header .compare-row-label {
-    background: var(--wire-placeholder-dark);
-    width: 50%;
-  }
-  .compare-cell {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .cell-check {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background:
+    width:
