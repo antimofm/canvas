@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta property="og:title" content="Progress update
+
+- wired  into slack
+- it can now cast from it
+
+Next this week:
+
+- canvas ">
+<meta property="og:description" content="made with canvas — tag @redmake">
+<meta property="og:image" content="https://canvas.slash.red/og.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://canvas.slash.red/og.png">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Progress Update — Canvas</title>
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  :root {
+    --red: #E8271B;
+    --red-dim: #B81E14;
+    --red-glow: rgba(232, 39, 27, 0.12);
+    --red-line: rgba(232, 39, 27, 0.25);
+    --bg: #0A0A0A;
+    --surface: #111111;
+    --surface-2: #161616;
+    --border: rgba(255,255,255,0.06);
+    --text: #F0F0F0;
+    --text-muted: #666666;
+    --text-dim: #444444;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 64px 24px 96px;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: 620px;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 56px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-mark {
+    width: 28px;
+    height: 28px;
+    background: var(--red);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .logo-mark svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .logo-name {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .header-meta {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* Divider */
+  .rule {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 48px;
+    position: relative;
+  }
+
+  .rule::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 48px;
+    height: 1px;
+    background: var(--red);
+  }
+
+  /* Title block */
+  .title-block {
+    margin-bottom: 52px;
+  }
+
+  .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 1px;
+    background: var(--red);
+  }
+
+  .title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1.15;
+  }
+
+  .title span {
+    color: var(--red);
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 44px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .section-badge {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-weight: 700;
+  }
+
+  .badge-done {
+    background: rgba(232, 39, 27, 0.12);
+    color: var(--red);
+    border: 1px solid rgba(232, 39, 27, 0.2);
+  }
+
+  .badge-next {
+    background: rgba(255,255,255,0.04);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+
+  /* Items */
+  .items {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: border-color 0.15s, background 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: transparent;
+    transition: background 0.15s;
+  }
+
+  .item.done::before {
+    background: var(--red);
+  }
+
+  .item.next::before {
+    background: var(--border);
+  }
+
+  .item:hover {
+    background: var(--surface-2);
+    border-color: rgba(255,255,255,0.1);
+  }
+
+  .item.done:hover {
+    border-color: var(--red-line);
+    background: var(--red-glow);
+  }
+
+  .item-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .check-icon {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .check-icon svg {
+    width: 9px;
+    height: 9px;
+  }
+
+  .next-icon {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1.5px solid var(--text-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .next-icon svg {
+    width: 7px;
+    height: 7px;
+  }
+
+  .item-body {
+    flex: 1;
+  }
+
+  .item-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .item-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    letter-spacing: 0.01em;
+  }
+
+  .item-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    color: var(--red);
+    text-decoration: none;
+    margin-top: 6px;
+    letter-spacing: 0.04em;
+    opacity: 0.8;
+    transition: opacity 0.15s;
+  }
+
+  .item-link:hover {
+    opacity: 1;
+  }
+
+  .item-link svg {
+    width: 9px;
+    height: 9px;
+  }
+
+  /* Tags */
+  .tag {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 2px;
+    margin-left: 10px;
+    background: rgba(255,255,255,0.05);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    vertical-align: middle;
+    font-weight: 600;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-left {
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+
+  /* Stat row */
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+    margin-bottom: 44px;
+  }
+
+  .stat {
+    padding: 14px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  .stat-label {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  .stat-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .stat-value.red {
+    color: var(--red);
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 40px 16px 72px; }
+    .title { font-size: 22px; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .header-meta { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="1" width="5.5" height="5.5" fill="white"/>
+          <rect x="7.5" y="1" width="5.5" height="5.5" fill="white" opacity="0.5"/>
+          <rect x="1" y="7.5" width="5.5" height="5.5" fill="white" opacity="0.5"/>
+          <rect x="7.5" y="7.5" width="5.5" height="5.5" fill="white"/>
+        </svg>
+      </div>
+      <span class="logo-name">Canvas</span>
+    </div>
+    <span class="header-meta">Progress Update</span>
+  </header>
+
+  <div class="rule"></div>
+
+  <!-- Title -->
+  <div class="title-block">
+    <div class="eyebrow">Weekly Status</div>
+    <h1 class="title">What shipped.<br>What's <span>next</span>.</h1>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Shipped</div>
+      <div class="stat-value red">2</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Up Next</div>
+      <div class="stat-value">4</div>
+    </div>
+  </div>
+
+  <!-- Done section -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label">Done</span>
+      <div class="section-line"></div>
+      <span class="section-badge badge-done">Shipped</span>
+    </div>
+
+    <div class="items">
+      <div class="item done">
+        <div class="item-icon">
+          <div class="check-icon">
+            <svg viewBox="0 0 9 9" fill="none">
+              <path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="item-body">
+          <div class="item-text">Wired into Slack</div>
+          <div class="item-sub">Integration live — Canvas is now connected to your workspace.</div>
+        </div>
+      </div>
+
+      <div class="item done">
+        <div class="item-icon">
+          <div class="check-icon">
+            <svg viewBox="0 0 9 9" fill="none">
+              <path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="item-body">
+          <div class="item-text">Cast from Canvas</div>
+          <div class="item-sub">You can now cast directly to Farcaster from within Canvas.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Next section -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label">This Week</span>
+      <div class="section-line"></div>
+      <span class="section-badge badge-next">In Progress</span>
+    </div>
+
+    <div class="items">
+
+      <div class="item next">
+        <div class="item-icon">
+          <div class="next-icon">
+            <svg viewBox="0 0 7 7" fill="none">
+              <circle cx="3.5" cy="3.5" r="1.5" fill="#444"/>
+            </svg>
+          </div>
+        </div>
+        <div class="item-body">
+          <div class="item-text">Canvas Payments<span class="tag">Priority</span></div>
+          <div class="item-sub">Payment infrastructure for Canvas.</div>
+          <a class="item-link" href="https://farcaster.xyz/antimofm.eth/0x3eea0977" target="_blank" rel="noopener">
+            <svg viewBox="0 0 9 9" fill="none">
+              <path d="M1 8L8 1M8 1H3M8 1V6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            farcaster.xyz/antimofm.eth/0x3eea0977
+          </a>
+        </div>
+      </div>
+
+      <div class="item next">
+        <div class="item-icon">
+          <div class="next-icon">
+            <svg viewBox="0 0 7 7" fill="none">
+              <circle cx="3.5" cy="3.5" r="1.5" fill="#444"/>
+            </svg>
+          </div>
+        </div>
+        <div class="item-body">
+          <div class="item-text">Open Canvas Past Whitelist</div>
+          <div class="item-sub">Remove whitelist gate — broader access rollout.</div>
+        </div>
+      </div>
+
+      <div class="item next">
+        <div class="item-icon">
+          <div class="next-icon">
+            <svg viewBox="0 0 7 7" fill="none">
+              <circle cx="3.5" cy="3.5" r="1.5" fill="#444"/>
+            </svg>
+          </div>
+        </div>
+        <div class="item-body">
+          <div class="item-text">Ad Hoc Previews</div>
+          <div class="item-sub">On-demand preview generation for any canvas.</div>
+        </div>
+      </div>
+
+      <div class="item next">
+        <div class="item-icon">
+          <div class="next-icon">
+            <svg viewBox="0 0 7 7" fill="none">
+              <circle cx="3.5" cy="3.5" r="1.5" fill="#444"/>
+            </svg>
+          </div>
+        </div>
+        <div class="item-body">
+          <div class="item-text">Canvas One Pager</div>
+          <div class="item-sub">FAQ, pricing, and positioning — all in one place.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <span class="footer-left">RED · Design Engine</span>
+    <div class="footer-right">
+      <div class="pulse"></div>
+      Active sprint
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
